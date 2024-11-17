@@ -1,24 +1,3 @@
-# wad2024-y-vue
+# WAD2024-Y-Vue
 
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Web Application Development 2024 course project using Vue.js framework, made by Team Y
