@@ -1,4 +1,9 @@
 <template>
+    <head>
+        <title>
+            Homepage
+        </title>
+    </head>
 <div>
     <header class="main-header">
     <nav>
@@ -8,7 +13,7 @@
     <!-- <img id="profile-picture" class="profile-picture" src="@/assets/male-icon.png" alt="profile picture"> -->
     <router-view />
     </header>
-
+    <!-- <home-page /> -->
     <footer class="main-footer">
             <p>Web page developed by Aksel, Mark and Tõnis</p>
         </footer>
@@ -16,16 +21,16 @@
 
 </template>
 
-<!-- <script>
-import HomePage from './views/HomePage.vue'
+<script>
+import HomePage from '@/views/HomePage.vue'
 
 export default {
   name: 'App',
-  components: {
+  Components: {
     HomePage
   }
 }
-</script> -->
+</script>
 
 <style>
 #app {

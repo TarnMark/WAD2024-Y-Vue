@@ -1,34 +1,23 @@
 <template>
-<!-- <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Homepage</title>
-    <link rel="stylesheet" href="./res/css/style.css">
-    <link rel="stylesheet" href="./res/css/index.css">
-</head> -->
-
 <body>
     <div class="ix-mainbars">
         <aside></aside>
         <main>
-            Here will come all the posts!
+            <!-- Here will come all the posts! -->
+            <getPosts></getPosts>
         </main>
         <aside></aside>
     </div>
-    <!-- <script src="src/javascript.js"></script> -->
 </body>
 </template>
 
 <script>
-// @ is an alias to /src
-//import  from "@/components/.vue";   
+import getPosts from "@/components/Posts.vue"; 
 
 export default {
-  name: "HomePage"
-//   components: {
-//     
-//   },
-};
+    name: "HomePage",
+    components: {getPosts}
+}
 </script>
 
 <style scoped>
@@ -68,32 +57,11 @@ export default {
     overflow: scroll;
 }
 
-article.post {
+/* article.post {
     margin: 4px;
     padding: 8px;
     background-color: ghostwhite;
-}
-
-header.postheader {
-    min-height: 24px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-bottom: 8px;
-}
-
-.post-body {
-    margin: 4px;
-    min-height: 36px;
-}
-
-button.like {
-    background-image: url("@/assets/thumbs-up-black-icon.svg");
-    background-repeat: no-repeat;
-    min-width: 24px;
-    height: 24px;
-    border: none;
-}
+} */
 
 @media (max-width: 600px) {
     .ix-mainbars {
