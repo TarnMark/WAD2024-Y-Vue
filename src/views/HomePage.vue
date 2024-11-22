@@ -3,8 +3,8 @@
     <div class="ix-mainbars">
         <aside></aside>
         <main>
-            <!-- Here will come all the posts! -->
-            <getPosts></getPosts>
+            <getPosts/>
+            <button @click="this.$store.dispatch('resetLikes')" class="reset-likes">Reset Likes</button>
         </main>
         <aside></aside>
     </div>
@@ -53,15 +53,26 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    max-height: 85vh; /* hard coded */
+    /* max-height: 85vh; hard coded */
     overflow: scroll;
 }
 
-/* article.post {
-    margin: 4px;
-    padding: 8px;
-    background-color: ghostwhite;
-} */
+.reset-likes {
+    width: 20%;
+    padding: 10px;
+    align-self: center;
+    background-color: #ff005d;
+    color: white;
+    border: none;
+    margin: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.reset-likes:hover {
+    background-color: #ff5090;
+}
 
 @media (max-width: 600px) {
     .ix-mainbars {

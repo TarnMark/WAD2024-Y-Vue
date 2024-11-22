@@ -1,22 +1,18 @@
 <template>
-    <div class="post-list" v-for="post in posts" :key="post.id">
-        <!-- :key="post.index"> -->
-        <article class="post">
+    <div class="post-list">
+        <article class="post" v-for="post in posts" :key="post.id">
             <header class="postheader">
-                <img class="profile-picture" src="@/assets/male-icon.png" alt="GallantWorm profile picture">
+                <img class="profile-picture" :src="post.profilePic" :alt="post.authorName" />
                 <span class="post-date">{{ post.postDate }}</span>
             </header>
             <div class="post-body">
-                <!-- <img src={{post.posptImg}} alt="user photo"> -->
+                <img :src=post.postImg>
                 <p>{{ post.postText }}</p>
             </div>
             <footer class="post-footer">
                 <button class="like" @click="this.$store.dispatch('incrementLikes', post)"></button>
                 <span class=" like-count">{{ post.likes }}</span>
             </footer>
-
-            <!-- <div class=" post"> -->
-            <!-- </div> -->
         </article>
     </div>
 </template>
@@ -41,8 +37,12 @@ export default {
     padding: 8px;
     background-color: ghostwhite;
     text-align: left;
-    /* display: block;
-    unicode-bidi: isolate; */
+}
+
+.profile-picture {
+    background-color: cadetblue;
+    max-width: 32px;
+    max-height: 32px;
 }
 
 header.postheader {
