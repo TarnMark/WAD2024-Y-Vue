@@ -10,10 +10,12 @@
 <style scoped>
 nav {
     padding: 8px;
-    background-color: lightgray;
+    background-color: lightblue;
     display: flex;
     justify-content: center;
-    margin: 4px;
+    margin: 12px;
+    margin-top: 4px;
+    margin-bottom: 4px;
 }
 
 nav>a {
@@ -24,6 +26,7 @@ nav>a {
     /* text-shadow: 1px 1px slategray; */
     /* background-color: gray; */
 }
+
 a:hover {
     color: cornflowerblue;
 }

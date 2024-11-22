@@ -6,7 +6,7 @@
                 <span class="post-date">{{ post.postDate }}</span>
             </header>
             <div class="post-body">
-                <img :src=post.postImg>
+                <img :src=post.postImg v-if="post.postImg">
                 <p>{{ post.postText }}</p>
             </div>
             <footer class="post-footer">
@@ -35,8 +35,10 @@ export default {
 .post {
     margin: 4px;
     padding: 8px;
-    background-color: ghostwhite;
+    background-color: white;
     text-align: left;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.277);
+    border-radius: 4px;
 }
 
 .profile-picture {
@@ -55,6 +57,7 @@ header.postheader {
 
 .post-body {
     margin: 4px;
+    margin-left: 0px;
     min-height: 36px;
 }
 
