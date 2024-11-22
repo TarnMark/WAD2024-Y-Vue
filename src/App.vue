@@ -1,23 +1,25 @@
 <template>
+
     <head>
         <title>
             Homepage
         </title>
     </head>
-<div>
-    <header class="main-header">
-    <nav>
-        <router-link to="/">Home</router-link>
-        <router-link to="/signup">Sign Up</router-link>
-    </nav>
-    <!-- <img id="profile-picture" class="profile-picture" src="@/assets/male-icon.png" alt="profile picture"> -->
-    <router-view />
-    </header>
-    <!-- <home-page /> -->
-    <footer class="main-footer">
+    <div>
+        <header class="main-header">
+            <nav>
+                <router-link to="/">Home</router-link>
+                <router-link to="/signup">Sign Up</router-link>
+            </nav>
+            <!-- <img id="profile-picture" class="profile-picture" src="@/assets/male-icon.png" alt="profile picture"> -->
+            <router-view />
+        </header>
+        <button @click="this.$store.dispatch('resetLikes')" class="reset-likes">Reset Likes</button>
+        <!-- <home-page /> -->
+        <footer class="main-footer">
             <p>Web page developed by Aksel, Mark and Tõnis</p>
         </footer>
-</div>
+    </div>
 
 </template>
 
@@ -25,21 +27,22 @@
 import HomePage from '@/views/HomePage.vue'
 
 export default {
-  name: 'App',
-  Components: {
-    HomePage
-  }
+    name: 'App',
+    Components: {
+        HomePage
+    }
 }
 </script>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
 }
+
 /* * {
     padding: 0;
     margin: 0;
@@ -60,14 +63,14 @@ nav {
     padding: 8px;
     background-color: lightgray;
     display: flex;
-    justify-content:center;
+    justify-content: center;
     margin: 4px;
 }
 
-nav > a {
+nav>a {
     padding: 10px;
     font-weight: bold;
-    text-shadow:1px 1px slategray;
+    text-shadow: 1px 1px slategray;
 }
 
 menu.main-menu {
@@ -106,7 +109,7 @@ menu.main-menu a:hover {
 .dropdown-parent {
     position: absolute;
     right: 0;
-    top:48px;
+    top: 48px;
 }
 
 .dropdown-menu {
@@ -125,7 +128,7 @@ menu.main-menu a:hover {
     width: 200px
 }
 
-.dropdown-menu>.logout>a{
+.dropdown-menu>.logout>a {
     color: #0056b3;
 }
 
@@ -159,14 +162,28 @@ footer.main-footer {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-
 }
 
 .submitButton:hover {
     background-color: #0056b3;
 }
 
-label + textarea {
+.reset-likes {
+    width: 10%;
+    padding: 10px;
+    background-color: #ff005d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.reset-likes:hover {
+    background-color: #ff5090;
+}
+
+label+textarea {
     vertical-align: top;
     resize: none;
 }
