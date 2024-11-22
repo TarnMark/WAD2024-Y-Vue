@@ -1,32 +1,34 @@
 <template>
     <div class="post-list" v-for="post in posts" :key="post.id">
-          <!-- :key="post.index"> -->
-    <article class="post">
-        <header class="postheader">
-            <img class="profile-picture" src="@/assets/male-icon.png" alt="GallantWorm profile picture">
-            <span class="post-date">{{post.postDate}}</span>
-        </header>
-        <div class="post-body">
-             <!-- <img src={{post.posptImg}} alt="user photo"> -->
-            <p>{{ post.postText }}</p>
-        </div>
-        <footer class="post-footer">
-            <button class="like"></button>
-        </footer>
-          
-    <!-- <div class="post"> -->
-    <!-- </div> -->
-    </article>
-    </div> 
+        <!-- :key="post.index"> -->
+        <article class="post">
+            <header class="postheader">
+                <img class="profile-picture" src="@/assets/male-icon.png" alt="GallantWorm profile picture">
+                <span class="post-date">{{ post.postDate }}</span>
+            </header>
+            <div class="post-body">
+                <!-- <img src={{post.posptImg}} alt="user photo"> -->
+                <p>{{ post.postText }}</p>
+            </div>
+            <footer class="post-footer">
+                <button class="like" @click="this.$store.dispatch('incrementLikes', post)"></button>
+                <span class=" like-count">{{ post.likes }}</span>
+            </footer>
+
+            <!-- <div class=" post"> -->
+            <!-- </div> -->
+        </article>
+    </div>
 </template>
 
 <script>
 export default {
     name: "getPosts",
-    data: function() {
-        return {}},
+    data: function () {
+        return {}
+    },
     computed: {
-        posts(){
+        posts() {
             return this.$store.state.posts
         }
     }
@@ -38,6 +40,7 @@ export default {
     margin: 4px;
     padding: 8px;
     background-color: ghostwhite;
+    text-align: left;
     /* display: block;
     unicode-bidi: isolate; */
 }
@@ -61,5 +64,16 @@ button.like {
     min-width: 24px;
     height: 24px;
     border: none;
+}
+
+.post-footer {
+    display: flex;
+    align-items: center;
+}
+
+.like-count {
+    display: inline;
+    margin-left: 8px;
+    font-size: large;
 }
 </style>
