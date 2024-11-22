@@ -84,6 +84,8 @@ export default {
     align-items: center;
     height: 100vh;
     background-color: #f0f0f0;
+    margin-left: 12px;
+    margin-right: 12px;
 }
 
 .form-container {
@@ -111,7 +113,8 @@ label {
 }
 
 input {
-    width: 100%;
+    width: 94%;
+    /* hack */
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 5px;
