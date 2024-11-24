@@ -10,7 +10,7 @@
                 <p>{{ post.postText }}</p>
             </div>
             <footer class="post-footer">
-                <button class="like" @click="this.$store.dispatch('incrementLikes', post)"></button>
+                <button class="like" @click="likePost(post)"></button>
                 <span class=" like-count">{{ post.likes }}</span>
             </footer>
         </article>
@@ -26,6 +26,11 @@ export default {
     computed: {
         posts() {
             return this.$store.state.posts
+        }
+    },
+    methods: {
+        likePost(post) {
+            this.$store.dispatch('incrementLikes', post);
         }
     }
 }
