@@ -2,17 +2,17 @@
     <div class="post-list">
         <article class="post" v-for="post in posts" :key="post.id">
             <header class="postheader">
-                <img class="profile-picture" :src="post.profilePic" :alt="post.authorName" />
-                <span class="post-date">{{ post.postDate }}</span>
+                <!-- <img class="profile-picture" :src="post.profilePic" :alt="post.authorName" /> -->
+                <span class="post-date"> <p>{{ post.title }}</p> <p>{{ post.date }}</p> </span>
             </header>
             <div class="post-body">
-                <img :src=post.postImg v-if="post.postImg">
-                <p>{{ post.postText }}</p>
+                <!-- <img :src=post.postImg v-if="post.postImg"> -->
+                <p>{{ post.body }}</p>
             </div>
-            <footer class="post-footer">
+            <!-- <footer class="post-footer">
                 <button class="like" @click="likePost(post)"></button>
                 <span class=" like-count">{{ post.likes }}</span>
-            </footer>
+            </footer> -->
         </article>
     </div>
 </template>
@@ -21,17 +21,29 @@
 export default {
     name: "getPosts",
     data: function () {
-        return {}
-    },
-    computed: {
-        posts() {
-            return this.$store.state.posts
+        return {
+            posts:[ ]
         }
     },
+    // computed: {
+    //     posts() {
+    //         return this.$store.state.posts
+    //     }
+    // },
     methods: {
-        likePost(post) {
-            this.$store.dispatch('incrementLikes', post);
+        // likePost(post) {
+        //     this.$store.dispatch('incrementLikes', post);
+        // }
+        fetchPosts() {
+            fetch(`http://localhost:3000/api/posts/`)
+            .then((response) => response.json())
+            .then((data) => (this.posts = data))
+            .catch((err) => console.log(err.message));
         }
+    },
+    mounted() {
+        this.fetchPosts();
+        console.log("mounted");
     }
 }
 </script>

@@ -1,23 +1,48 @@
 <template>
-<body>
     <div class="ix-mainbars">
         <aside></aside>
         <main>
+            <button v-if = "authResult" @click="Logout">Logout</button>
             <getPosts/>
-            <button @click="this.$store.dispatch('resetLikes')" class="reset-likes">Reset Likes</button>
+            <!-- <button @click="this.$store.dispatch('resetLikes')" class="reset-likes">Reset Likes</button> -->
         </main>
         <aside></aside>
     </div>
-</body>
 </template>
 
 <script>
 import getPosts from "@/components/Posts.vue"; 
+import auth from "@/auth";
 
 export default {
     name: "HomePage",
-    components: {getPosts}
+    components: {getPosts},
+    data: function() {
+        return {
+            posts:[ ],
+            authResult: auth.authenticated()
+        }
+  },
+  methods: {
+    Logout() {
+            fetch("http://localhost:3000/auth/logout", {
+                credentials: 'include'
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                console.log('jwt removed');
+                this.$router.push("/login");
+            })
+            .catch((e) => {
+                console.log(e);
+                console.log("error logout");
+            });
+        }
+  }
+  
 }
+
 </script>
 
 <style scoped>

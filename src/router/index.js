@@ -1,6 +1,8 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import HomePage from "../views/HomePage.vue";
 import SignupPage from "../views/SignupPage.vue";
+import LogIn from "../views/LogIn.vue";
+import auth from "../auth";
 
 const routes = [{
         path: "/",
@@ -9,6 +11,14 @@ const routes = [{
             title: "Home"
         },
         component: HomePage,
+        beforeEnter: async(to, from, next) => {
+            let authResult = await auth.authenticated();
+            if (!authResult) {
+                next('/login')
+            } else {
+                next();
+            }
+        }
     },
     {
         path: "/signup",
@@ -17,6 +27,23 @@ const routes = [{
             title: "Sign Up"
         },
         component: SignupPage,
+    },
+    {
+        path: "/login",
+        name: "LogIn",
+        meta: {
+            title: "Log In"
+        },
+        component: LogIn,
+    },
+    {
+        path: "/contacts",
+        name: "contacts",
+        meta: {
+            title: "Contacts"
+        },
+        component: () =>
+            import ("../views/ContactsView.vue"),
     },
 ];
 

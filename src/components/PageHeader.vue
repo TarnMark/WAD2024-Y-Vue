@@ -2,7 +2,7 @@
     <header class="main-header">
         <nav>
             <router-link to="/">Home</router-link>
-            <router-link to="/signup">Sign Up</router-link>
+            <router-link to="/contacts">Contacts</router-link>
         </nav>
     </header>
 </template>
