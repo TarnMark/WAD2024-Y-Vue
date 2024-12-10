@@ -1,9 +1,10 @@
 <template>
+    <span class="posts-options"> <button @click="addPost">Add Post</button> <button @click="deleteAll">Delete All</button> </span>
     <div class="post-list">
         <article class="post" v-for="post in posts" :key="post.id">
             <header class="postheader">
                 <!-- <img class="profile-picture" :src="post.profilePic" :alt="post.authorName" /> -->
-                <span class="post-date"> <p>{{ post.title }}</p> <p>{{ post.date }}</p> </span>
+                <b> {{ post.title }} </b> <b>{{ new Date(post.date).toDateString() }} </b>
             </header>
             <div class="post-body">
                 <!-- <img :src=post.postImg v-if="post.postImg"> -->
@@ -27,7 +28,7 @@ export default {
     },
     // computed: {
     //     posts() {
-    //         return this.$store.state.posts
+    //         return this.posts
     //     }
     // },
     methods: {
@@ -37,8 +38,26 @@ export default {
         fetchPosts() {
             fetch(`http://localhost:3000/api/posts/`)
             .then((response) => response.json())
-            .then((data) => (this.posts = data))
+            .then((data) => (this.posts = data, this.posts.reverse()))
             .catch((err) => console.log(err.message));
+        },
+        deleteAll() {
+            console.log("Deleting all posts")
+            for (let post of this.posts){
+                //console.log(post.title)
+                fetch(`http://localhost:3000/api/posts/${post.id}`, {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+                })
+                .catch((e) => {
+                    console.log(e);
+                });
+            }
+            this.fetchPosts()
+        },
+        addPost() {
+            console.log("Adding new post")
+            // TODO: add routing to the AddPost page
         }
     },
     mounted() {

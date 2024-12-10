@@ -2,7 +2,9 @@
     <div class="ix-mainbars">
         <aside></aside>
         <main>
-            <button v-if = "authResult" @click="Logout">Logout</button>
+            <div class="main-options">
+                <button v-if = "authResult" @click="Logout">Logout</button>
+            </div>
             <getPosts/>
             <!-- <button @click="this.$store.dispatch('resetLikes')" class="reset-likes">Reset Likes</button> -->
         </main>
@@ -38,7 +40,24 @@ export default {
                 console.log(e);
                 console.log("error logout");
             });
-        }
+        },
+    Addpost() {
+
+    },
+    Deleteall() {
+        getPosts.methods.deleteAll()
+        // console.log(this.posts)
+        // for (let post in this.posts){
+        //     console.log(post)
+        //     fetch(`http://localhost:3000/api/posts/${post.id}`, {
+        //     method: "DELETE",
+        //     headers: { "Content-Type": "application/json" },
+        //     })
+        //     .catch((e) => {
+        //         console.log(e);
+        //     });
+        // }
+    }
   }
   
 }
