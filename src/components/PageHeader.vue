@@ -13,7 +13,7 @@ nav {
     background-color: lightblue;
     display: flex;
     justify-content: center;
-    margin: 12px;
+    margin: 4px;
     margin-top: 4px;
     margin-bottom: 4px;
 }

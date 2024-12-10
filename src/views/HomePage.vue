@@ -2,11 +2,8 @@
     <div class="ix-mainbars">
         <aside></aside>
         <main>
-            <div class="main-options">
-                <button v-if = "authResult" @click="Logout">Logout</button>
-            </div>
+            <button id="logout-button" v-if = "authResult" @click="Logout">Logout</button>    
             <getPosts/>
-            <!-- <button @click="this.$store.dispatch('resetLikes')" class="reset-likes">Reset Likes</button> -->
         </main>
         <aside></aside>
     </div>
@@ -24,7 +21,7 @@ export default {
             posts:[ ],
             authResult: auth.authenticated()
         }
-  },
+    },
   methods: {
     Logout() {
             fetch("http://localhost:3000/auth/logout", {
@@ -40,24 +37,7 @@ export default {
                 console.log(e);
                 console.log("error logout");
             });
-        },
-    Addpost() {
-
     },
-    Deleteall() {
-        getPosts.methods.deleteAll()
-        // console.log(this.posts)
-        // for (let post in this.posts){
-        //     console.log(post)
-        //     fetch(`http://localhost:3000/api/posts/${post.id}`, {
-        //     method: "DELETE",
-        //     headers: { "Content-Type": "application/json" },
-        //     })
-        //     .catch((e) => {
-        //         console.log(e);
-        //     });
-        // }
-    }
   }
   
 }
@@ -97,15 +77,15 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    /* max-height: 85vh; hard coded */
+    min-height: 75vh; 
     overflow: scroll;
 }
 
-.reset-likes {
-    width: 20%;
+#logout-button {
+    width: 97%;
     padding: 10px;
     align-self: center;
-    background-color: #ff005d;
+    background-color: #55aac6;
     color: white;
     border: none;
     margin: 10px;
@@ -114,8 +94,8 @@ export default {
     font-size: 16px;
 }
 
-.reset-likes:hover {
-    background-color: #ff5090;
+#logout-button:hover {
+    background-color: #387083;
 }
 
 @media (max-width: 600px) {

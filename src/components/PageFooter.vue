@@ -11,8 +11,6 @@ footer.main-footer {
     display: flex;
     justify-content: center;
     background-color: grey;
-    margin: 12px;
-    margin-top: 4px;
-    margin-bottom: 4px;
+    margin: 4px;
 }
 </style>
