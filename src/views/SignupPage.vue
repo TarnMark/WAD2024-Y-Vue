@@ -4,20 +4,26 @@
             <div class="form-container">
                 <h2>Sign Up</h2>
                 <form @submit.prevent="handleSignup">
-                    <!-- E-post -->
+                    <!-- Email -->
                     <div class="form-group">
                         <label for="email">Email:</label>
                         <input v-model="email" id="email" type="email" placeholder="Email" required />
                     </div>
 
-                    <!-- Parool -->
+                    <!-- Password -->
                     <div class="form-group">
                         <label for="password">Password:</label>
-                        <input v-model="password" id="password" type="password" placeholder="Password"
-                            @input="validatePassword" required />
+                        <input
+                            v-model="password"
+                            id="password"
+                            type="password"
+                            placeholder="Password"
+                            @input="validatePassword"
+                            required
+                        />
                     </div>
 
-                    <!-- Veateated -->
+                    <!-- Validation Errors -->
                     <div v-if="passwordErrors.length">
                         <p class="error">The password is not valid:</p>
                         <ul>
@@ -27,10 +33,19 @@
                         </ul>
                     </div>
 
-                    <!-- Registreerimise nupp -->
-                    <button @click="SignUp" type="submit" class="signup-button" :disabled="passwordErrors.length > 0">
-                        Signup
+                    <!-- Signup Button -->
+                    <button
+                        @click="SignUp"
+                        type="submit"
+                        class="signup-button"
+                        :disabled="passwordErrors.length > 0 || loading"
+                    >
+                        {{ loading ? "Signing up..." : "Signup" }}
                     </button>
+
+                    <!-- Success or Error Messages -->
+                    <p v-if="successMessage" class="success">{{ successMessage }}</p>
+                    <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
                 </form>
             </div>
         </main>
@@ -44,6 +59,9 @@ export default {
             email: "",
             password: "",
             passwordErrors: [],
+            loading: false,
+            successMessage: "",
+            errorMessage: "",
         };
     },
     methods: {
@@ -71,33 +89,55 @@ export default {
             }
         },
         handleSignup() {
+            if (this.passwordErrors.length > 0) {
+                this.errorMessage = "Please resolve the password errors before signing up.";
+                return;
+            }
+            this.errorMessage = "";
             alert(`Signed up with email: ${this.email}`);
         },
         SignUp() {
-            var data = {
-            email: this.email,
-            password: this.password
+            if (!this.email || !this.password) {
+                this.errorMessage = "Please fill in all fields.";
+                return;
+            }
+
+            this.loading = true;
+            this.successMessage = "";
+            this.errorMessage = "";
+
+            const data = {
+                email: this.email,
+                password: this.password,
             };
-      // using Fetch - post method - send an HTTP post request to the specified URI with the defined body
+
             fetch("http://localhost:3000/auth/signup", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                credentials: 'include',
+                credentials: "include",
                 body: JSON.stringify(data),
             })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                this.$router.push("/");
-                //location.assign("/");
-            })
-            .catch((e) => {
-                console.log(e);
-                console.log("error");
-            });
-        }
+                .then((response) => {
+                    if (!response.ok) {
+                        return response.json().then((err) => {
+                            throw new Error(err.error || "Signup failed.");
+                        });
+                    }
+                    return response.json();
+                })
+                .then(() => {
+                    this.successMessage = "Signup successful! Redirecting...";
+                    setTimeout(() => this.$router.push("/"), 1500); // Redirect after 1.5 seconds
+                })
+                .catch((error) => {
+                    this.errorMessage = error.message || "An error occurred during signup.";
+                })
+                .finally(() => {
+                    this.loading = false;
+                });
+        },
     },
 };
 </script>
@@ -139,7 +179,6 @@ label {
 
 input {
     width: 94%;
-    /* hack */
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -156,6 +195,13 @@ input:focus {
     font-size: 12px;
     margin-top: 5px;
     text-align: left;
+}
+
+.success {
+    color: green;
+    font-size: 12px;
+    margin-top: 10px;
+    text-align: center;
 }
 
 .signup-button {

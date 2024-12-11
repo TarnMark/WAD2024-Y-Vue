@@ -121,52 +121,84 @@ app.get('/auth/authenticate', async(req, res) => {
 });
 
 // Signing up the user
-app.post('/auth/signup', async(req, res) => {
+app.post('/auth/signup', async (req, res) => {
     try {
-        console.log("a signup request has arrived");
+        console.log("A signup request has arrived");
+
         const { email, password } = req.body;
+
+        const userExists = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
+        if (userExists.rows.length > 0) {
+            return res.status(400).json({ error: "User already exists" });
+        }
 
         const salt = await bcrypt.genSalt();
-        const bcryptPassword = await bcrypt.hash(password, salt)
+        const bcryptPassword = await bcrypt.hash(password, salt);
+
         const authUser = await pool.query(
-            "INSERT INTO users(email, password) values ($1, $2) RETURNING*", [email, bcryptPassword]
+            "INSERT INTO users (email, password) VALUES ($1, $2) RETURNING *",
+            [email, bcryptPassword]
         );
-        console.log(authUser.rows[0].id);
-        const token = await generateJWT(authUser.rows[0].id);
+
+        const token = generateJWT(authUser.rows[0].id);
         res
             .status(201)
-            .cookie('jwt', token, { maxAge: 6000000, httpOnly: true })
-            .json({ user_id: authUser.rows[0].id })
-            .send;
+            .cookie('jwt', token, { maxAge: 3 * 24 * 60 * 60 * 1000, httpOnly: true }) // Token valid for 3 days
+            .json({ user_id: authUser.rows[0].id });
+
     } catch (err) {
         console.error(err.message);
-        res.status(400).send(err.message);
+        res.status(500).send("Server error");
     }
 });
 
-app.post('/auth/login', async(req, res) => {
+app.post('/auth/login', async (req, res) => {
     try {
-        console.log("a login request has arrived");
-        const { email, password } = req.body;
-        const user = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
+        console.log("A login request has arrived");
 
-        if (user.rows.length === 0) return res.status(401).json({ error: "User is not registered" });
+        const { email, password } = req.body;
+
+        const user = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
+        if (user.rows.length === 0) {
+            return res.status(401).json({ error: "User is not registered" });
+        }
 
         const validPassword = await bcrypt.compare(password, user.rows[0].password);
-        if (!validPassword) return res.status(401).json({ error: "Incorrect password" });
+        if (!validPassword) {
+            return res.status(401).json({ error: "Incorrect password" });
+        }
 
-        const token = await generateJWT(user.rows[0].id);
+        const token = generateJWT(user.rows[0].id);
         res
-            .status(201)
-            .cookie('jwt', token, { maxAge: 6000000, httpOnly: true })
-            .json({ user_id: user.rows[0].id })
-            .send;
+            .status(200)
+            .cookie('jwt', token, { maxAge: 3 * 24 * 60 * 60 * 1000, httpOnly: true }) // Token valid for 3 days
+            .json({ user_id: user.rows[0].id });
+
     } catch (error) {
-        res.status(401).json({ error: error.message });
+        console.error(error.message);
+        res.status(500).send("Server error");
     }
 });
+
 
 app.get('/auth/logout', (req, res) => {
     console.log('delete jwt request arrived');
-    res.status(202).clearCookie('jwt').json({ "Msg": "cookie cleared" }).send
+    res.status(202).clearCookie('jwt').json({ redirect: '/login', message: "Logged out successfully" });
 });
+
+const authenticateToken = (req, res, next) => {
+    const token = req.cookies.jwt;
+
+    if (!token) {
+        return res.status(401).json({ error: "Access denied. No token provided." });
+    }
+
+    jwt.verify(token, secret, (err, decoded) => {
+        if (err) {
+            return res.status(403).json({ error: "Invalid token." });
+        }
+
+        req.userId = decoded.id; // Attach the user ID to the request
+        next();
+    });
+};
