@@ -25,10 +25,13 @@ app.listen(port, () => {
     console.log("Server is listening to port " + port)
 });
 
-app.post('/api/posts', async(req, res) => {
+app.post('/api/posts', async (req, res) => {
     try {
         console.log("a post request has arrived");
+        authenticateToken(req, res);
+        if (res.statusCode >= 400) return;
         const post = req.body;
+        post.date = new Date();
         const newpost = await pool.query(
             "INSERT INTO posttable(title, body, date) values ($1, $2, $3)    RETURNING*", [post.title, post.body, post.date]
         );
@@ -38,9 +41,11 @@ app.post('/api/posts', async(req, res) => {
     }
 });
 
-app.get('/api/posts', async(req, res) => {
+app.get('/api/posts', async (req, res) => {
     try {
         console.log("get posts request has arrived");
+        authenticateToken(req, res);
+        if (res.statusCode >= 400) return;
         const posts = await pool.query(
             "SELECT * FROM posttable"
         );
@@ -50,9 +55,11 @@ app.get('/api/posts', async(req, res) => {
     }
 });
 
-app.get('/api/posts/:id', async(req, res) => {
+app.get('/api/posts/:id', async (req, res) => {
     try {
         console.log("get a post with route parameter request has arrived");
+        authenticateToken(req, res);
+        if (res.statusCode >= 400) return;
         const { id } = req.params;
         const posts = await pool.query(
             "SELECT * FROM posttable WHERE id = $1", [id]
@@ -63,13 +70,17 @@ app.get('/api/posts/:id', async(req, res) => {
     }
 });
 
-app.put('/api/posts/:id', async(req, res) => {
+app.put('/api/posts/:id', async (req, res) => {
     try {
         const { id } = req.params;
         const post = req.body;
+        authenticateToken(req, res);
+        if (res.statusCode >= 400) return;
         console.log("update request has arrived");
         const updatepost = await pool.query(
-            "UPDATE posttable SET (title, body, date) = ($2, $3, $4) WHERE id = $1 RETURNING*", [id, post.title, post.body, post.date]
+            // do not update date or title
+            // no date update because the user cannot and shouldn't manually set it anyway
+            "UPDATE posttable SET body = ($2) WHERE id = $1 RETURNING*", [id, post.body]
         );
         res.json(updatepost);
     } catch (err) {
@@ -77,10 +88,12 @@ app.put('/api/posts/:id', async(req, res) => {
     }
 });
 
-app.delete('/api/posts/:id', async(req, res) => {
+app.delete('/api/posts/:id', async (req, res) => {
     try {
         const { id } = req.params;
         console.log("delete a post request has arrived");
+        authenticateToken(req, res)
+        if (res.statusCode >= 400) return;
         const deletepost = await pool.query(
             "DELETE FROM posttable WHERE id = $1 RETURNING*", [id]
         );
@@ -92,7 +105,7 @@ app.delete('/api/posts/:id', async(req, res) => {
 
 
 // Check whether user is authinticated
-app.get('/auth/authenticate', async(req, res) => {
+app.get('/auth/authenticate', async (req, res) => {
     console.log('authentication request has been arrived');
     const token = req.cookies.jwt;
     //console.log("token " + token);
@@ -186,19 +199,20 @@ app.get('/auth/logout', (req, res) => {
     res.status(202).clearCookie('jwt').json({ redirect: '/login', message: "Logged out successfully" });
 });
 
-const authenticateToken = (req, res, next) => {
+const authenticateToken = (req, res) => {
     const token = req.cookies.jwt;
 
     if (!token) {
+        console.log("token missing");
         return res.status(401).json({ error: "Access denied. No token provided." });
     }
 
     jwt.verify(token, secret, (err, decoded) => {
         if (err) {
+            console.log("token error: ", err.message);
             return res.status(403).json({ error: "Invalid token." });
         }
 
         req.userId = decoded.id; // Attach the user ID to the request
-        next();
     });
 };

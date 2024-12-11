@@ -4,14 +4,15 @@ import SignupPage from "../views/SignupPage.vue";
 import LogIn from "../views/LogIn.vue";
 import auth from "../auth";
 
-const routes = [{
+const routes = [
+    {
         path: "/",
         name: "home",
         meta: {
             title: "Home"
         },
         component: HomePage,
-        beforeEnter: async(to, from, next) => {
+        beforeEnter: async (to, from, next) => {
             let authResult = await auth.authenticated();
             if (!authResult) {
                 next('/login')
@@ -43,8 +44,24 @@ const routes = [{
             title: "Contacts"
         },
         component: () =>
-            import ("../views/ContactsView.vue"),
+            import("../views/ContactsView.vue"),
     },
+    {
+        path: "/addpost",
+        name: "addpost",
+        meta: {
+            title: "Add Post"
+        },
+        component: () => import("../views/AddPost.vue"),
+    },
+    {
+        path: "/apost/:id",
+        name: "apost",
+        meta: {
+            title: "A Post"
+        },
+        component: () => import("../views/APost.vue"),
+    }
 ];
 
 const router = createRouter({

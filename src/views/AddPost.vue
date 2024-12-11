@@ -1,20 +1,16 @@
 <template>
-  <div class="A Post">
+  <div class="Add Post">
     <div id="form">
-      <h3>A Post</h3>
-      <label for="title">Title: </label> <!-- TODO: Make title static and not changeable! -->
-      <input disabled name="type" type="text" id="title" required v-model="post.title" />
+      <h3>Add Post</h3>
+      <label for="title">Title: </label>
+      <input name="type" type="text" id="title" required v-model="post.title" />
       <label for="body">Body: </label>
       <input name="body" type="text" id="body" required v-model="post.body" />
 
-      <!-- TODO: Add post date! (as static info) -->
 
-      <!-- <label for="url">Url: </label>
-      <input name="url" type="text" id="url" required v-model="post.urllink" /> -->
     </div>
     <div class="container">
-      <button @click="updatePost" class="updatePost">Update Post</button>
-      <button @click="deletePost" class="deletePost">Delete Post</button>
+      <button @click="addPost" class="addPost">Add Post</button>
     </div>
   </div>
 </template>
@@ -22,29 +18,22 @@
 
 <script>
 export default {
-  name: "APost",
+  name: "AddPost",
   data() {
     return {
       post: {
-        id: "",
         title: "",
         body: "",
-        date: ""
+        // date: "" // the date is set by server when receiving post so noone can spoof their current date #securyty
         // urllink: "",
       },
     };
   },
   methods: {
-    fetchAPost(id) {
-      fetch(`http://localhost:3000/api/posts/${id}`, { credentials: "include" })
-        .then((response) => response.json())
-        .then((data) => (this.post = data))
-        .catch((err) => console.log(err.message));
-    },
-    updatePost() {
-      fetch(`http://localhost:3000/api/posts/${this.post.id}`, {
+    addPost() {
+      fetch(`http://localhost:3000/api/posts`, {
+        method: "POST",
         credentials: "include",
-        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
@@ -58,23 +47,6 @@ export default {
           console.log(e);
         });
     },
-    deletePost() {
-      fetch(`http://localhost:3000/api/posts/${this.post.id}`, {
-        credentials: "include",
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-      })
-        .then((response) => {
-          console.log(response.data);
-          this.$router.push("/");
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    },
-  },
-  mounted() {
-    this.fetchAPost(this.$route.params.id);
   },
 };
 </script>
@@ -121,6 +93,10 @@ button {
   margin-top: 20px;
   color: white;
   border-radius: 20px;
+}
+
+button:hover {
+  background: rgb(20, 200, 200);
 }
 
 .container {

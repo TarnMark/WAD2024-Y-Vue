@@ -1,20 +1,20 @@
 <template>
-    <span class="posts-options"> 
-        <button class="option-button" id="add-post-button" @click="addPost">Add Post</button> 
-        <button class="option-button" id="delete-all-button" @click="deleteAll">Delete All</button> 
+    <span class="posts-options">
+        <button class="option-button" id="add-post-button" @click="addPost">Add Post</button>
+        <button class="option-button" id="delete-all-button" @click="deleteAll">Delete All</button>
     </span>
 
     <div class="post-list">
         <article class="post" v-for="post in posts" :key="post.id">
             <!-- TODO: add "A Post" (editing) page here -->
-            <a class="post-link" href="">
-            <header class="postheader">
-                <b> {{ post.title }} </b> <b>{{ new Date(post.date).toDateString() }} </b>
-            </header>
-            <div class="post-body">
-                <p>{{ post.body }}</p>
-            </div>
-            </a>
+            <router-link class="post-link" :to="'apost/' + post.id">
+                <header class="postheader">
+                    <b> {{ post.title }} </b> <b>{{ new Date(post.date).toDateString() }} </b>
+                </header>
+                <div class="post-body">
+                    <p>{{ post.body }}</p>
+                </div>
+            </router-link>
         </article>
     </div>
 </template>
@@ -24,38 +24,39 @@ export default {
     name: "getPosts",
     data: function () {
         return {
-            posts:[ ]
+            posts: []
         }
     },
-    // computed: {
-    //     posts() {
-    //         return this.posts
-    //     }
-    // },
+    /*     computed: {
+            posts() {
+                return this.posts
+            }
+        }, */
     methods: {
         fetchPosts() {
-            fetch(`http://localhost:3000/api/posts/`)
-            .then((response) => response.json())
-            .then((data) => (this.posts = data, this.posts.reverse()))
-            .catch((err) => console.log(err.message));
+            fetch(`http://localhost:3000/api/posts/`, { credentials: "include" }) // include user cookies
+                .then((response) => response.json())
+                .then((data) => (this.posts = data, this.posts.reverse()))
+                .catch((err) => console.log(err.message));
         },
         deleteAll() {
             console.log("Deleting all posts")
-            for (let post of this.posts){
+            for (let post of this.posts) {
                 //console.log(post.title)
                 fetch(`http://localhost:3000/api/posts/${post.id}`, {
-                method: "DELETE",
-                headers: { "Content-Type": "application/json" },
+                    method: "DELETE",
+                    headers: { "Content-Type": "application/json" },
+                    credentials: "include",
                 })
-                .catch((e) => {
-                    console.log(e);
-                });
+                    .catch((e) => {
+                        console.log(e);
+                    });
             }
             this.fetchPosts()
         },
         addPost() {
             console.log("Adding new post")
-            // TODO: add routing to the AddPost page
+            this.$router.push("addpost")
         }
     },
     mounted() {

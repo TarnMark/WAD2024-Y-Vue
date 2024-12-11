@@ -2,44 +2,44 @@
     <div class="ix-mainbars">
         <aside></aside>
         <main>
-            <button id="logout-button" v-if = "authResult" @click="Logout">Logout</button>    
-            <getPosts/>
+            <button id="logout-button" v-if="authResult" @click="Logout">Logout</button>
+            <getPosts />
         </main>
         <aside></aside>
     </div>
 </template>
 
 <script>
-import getPosts from "@/components/Posts.vue"; 
+import getPosts from "@/components/Posts.vue";
 import auth from "@/auth";
 
 export default {
     name: "HomePage",
-    components: {getPosts},
-    data: function() {
+    components: { getPosts },
+    data: function () {
         return {
-            posts:[ ],
+            posts: [],
             authResult: auth.authenticated()
         }
     },
-  methods: {
-    Logout() {
+    methods: {
+        Logout() {
             fetch("http://localhost:3000/auth/logout", {
                 credentials: 'include'
             })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                console.log('jwt removed');
-                this.$router.push("/login");
-            })
-            .catch((e) => {
-                console.log(e);
-                console.log("error logout");
-            });
-    },
-  }
-  
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data);
+                    console.log('jwt removed');
+                    this.$router.push("/login");
+                })
+                .catch((e) => {
+                    console.log(e);
+                    console.log("error logout");
+                });
+        },
+    }
+
 }
 
 </script>
@@ -77,7 +77,7 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    min-height: 75vh; 
+    min-height: 75vh;
     overflow: scroll;
 }
 
