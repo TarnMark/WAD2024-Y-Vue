@@ -2,8 +2,6 @@
   <div class="A Post">
     <div id="form">
       <h3>A Post</h3>
-      <label for="title">Title: </label> <!-- TODO: Make title static and not changeable! -->
-      <input disabled name="type" type="text" id="title" required v-model="post.title" />
       <label for="body">Body: </label>
       <input name="body" type="text" id="body" required v-model="post.body" />
 
@@ -27,7 +25,6 @@ export default {
     return {
       post: {
         id: "",
-        title: "",
         body: "",
         date: ""
         // urllink: "",
@@ -121,6 +118,10 @@ button {
   margin-top: 20px;
   color: white;
   border-radius: 20px;
+}
+
+button:hover {
+  background: rgb(20, 200, 200);
 }
 
 .container {

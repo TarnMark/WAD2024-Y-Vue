@@ -2,8 +2,6 @@
   <div class="Add Post">
     <div id="form">
       <h3>Add Post</h3>
-      <label for="title">Title: </label>
-      <input name="type" type="text" id="title" required v-model="post.title" />
       <label for="body">Body: </label>
       <input name="body" type="text" id="body" required v-model="post.body" />
 
@@ -22,7 +20,6 @@ export default {
   data() {
     return {
       post: {
-        title: "",
         body: "",
         // date: "" // the date is set by server when receiving post so noone can spoof their current date #securyty
         // urllink: "",

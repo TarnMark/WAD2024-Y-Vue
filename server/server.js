@@ -33,7 +33,7 @@ app.post('/api/posts', async (req, res) => {
         const post = req.body;
         post.date = new Date();
         const newpost = await pool.query(
-            "INSERT INTO posttable(title, body, date) values ($1, $2, $3)    RETURNING*", [post.title, post.body, post.date]
+            "INSERT INTO posttable(body, date) values ($1, $2)    RETURNING*", [post.body, post.date]
         );
         res.json(newpost);
     } catch (err) {
@@ -78,7 +78,6 @@ app.put('/api/posts/:id', async (req, res) => {
         if (res.statusCode >= 400) return;
         console.log("update request has arrived");
         const updatepost = await pool.query(
-            // do not update date or title
             // no date update because the user cannot and shouldn't manually set it anyway
             "UPDATE posttable SET body = ($2) WHERE id = $1 RETURNING*", [id, post.body]
         );
