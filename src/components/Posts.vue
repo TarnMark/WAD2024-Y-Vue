@@ -1,18 +1,20 @@
 <template>
+    <span class="posts-options"> 
+        <button class="option-button" id="add-post-button" @click="addPost">Add Post</button> 
+        <button class="option-button" id="delete-all-button" @click="deleteAll">Delete All</button> 
+    </span>
+
     <div class="post-list">
         <article class="post" v-for="post in posts" :key="post.id">
+            <!-- TODO: add "A Post" (editing) page here -->
+            <a class="post-link" href="">
             <header class="postheader">
-                <!-- <img class="profile-picture" :src="post.profilePic" :alt="post.authorName" /> -->
-                <span class="post-date"> <p>{{ post.title }}</p> <p>{{ post.date }}</p> </span>
+                <b> {{ post.title }} </b> <b>{{ new Date(post.date).toDateString() }} </b>
             </header>
             <div class="post-body">
-                <!-- <img :src=post.postImg v-if="post.postImg"> -->
                 <p>{{ post.body }}</p>
             </div>
-            <!-- <footer class="post-footer">
-                <button class="like" @click="likePost(post)"></button>
-                <span class=" like-count">{{ post.likes }}</span>
-            </footer> -->
+            </a>
         </article>
     </div>
 </template>
@@ -27,18 +29,33 @@ export default {
     },
     // computed: {
     //     posts() {
-    //         return this.$store.state.posts
+    //         return this.posts
     //     }
     // },
     methods: {
-        // likePost(post) {
-        //     this.$store.dispatch('incrementLikes', post);
-        // }
         fetchPosts() {
             fetch(`http://localhost:3000/api/posts/`)
             .then((response) => response.json())
-            .then((data) => (this.posts = data))
+            .then((data) => (this.posts = data, this.posts.reverse()))
             .catch((err) => console.log(err.message));
+        },
+        deleteAll() {
+            console.log("Deleting all posts")
+            for (let post of this.posts){
+                //console.log(post.title)
+                fetch(`http://localhost:3000/api/posts/${post.id}`, {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+                })
+                .catch((e) => {
+                    console.log(e);
+                });
+            }
+            this.fetchPosts()
+        },
+        addPost() {
+            console.log("Adding new post")
+            // TODO: add routing to the AddPost page
         }
     },
     mounted() {
@@ -58,10 +75,12 @@ export default {
     border-radius: 4px;
 }
 
-.profile-picture {
-    background-color: cadetblue;
-    max-width: 32px;
-    max-height: 32px;
+.post-link {
+    color: #2c3e50;
+}
+
+.post-link:visited {
+    color: #2c3e50;
 }
 
 header.postheader {
@@ -78,22 +97,37 @@ header.postheader {
     min-height: 36px;
 }
 
-button.like {
-    background-image: url("@/assets/thumbs-up-black-icon.svg");
-    background-repeat: no-repeat;
-    min-width: 24px;
-    height: 24px;
-    border: none;
-}
-
-.post-footer {
+.posts-options {
     display: flex;
-    align-items: center;
+    flex-direction: row;
+    justify-content: space-evenly;
 }
 
-.like-count {
-    display: inline;
-    margin-left: 8px;
-    font-size: large;
+.option-button {
+    width: 50%;
+    padding: 10px;
+    align-self: center;
+    color: white;
+    border: none;
+    margin: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#add-post-button {
+    background-color: #14b57d;
+}
+
+#add-post-button:hover {
+    background-color: #0d7d56;
+}
+
+#delete-all-button {
+    background-color: #ff005d;
+}
+
+#delete-all-button:hover {
+    background-color: #bd0045;
 }
 </style>
