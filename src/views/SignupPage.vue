@@ -1,8 +1,8 @@
 <template>
-    <div class="signup-page">
+    <div class="page-body">
         <main>
-            <div class="form-container">
-                <h2>Sign Up</h2>
+            <div class="form">
+                <h3>Sign Up</h3>
                 <form @submit.prevent="handleSignup">
                     <!-- Email -->
                     <div class="form-group">
@@ -143,38 +143,17 @@ export default {
 </script>
 
 <style scoped>
-.signup-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f0f0f0;
-    margin-left: 12px;
-    margin-right: 12px;
-}
-
-.form-container {
-    background-color: #e6f7e8;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 300px;
-}
-
-h2 {
-    margin-bottom: 20px;
-}
-
-.form-group {
-    margin-bottom: 15px;
-    text-align: left;
+h3 {
+  color: rgb(8, 110, 110);
+  margin-bottom: 20px;
 }
 
 label {
+    color: rgb(8, 110, 110);
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
+    font-size: 14px;
 }
 
 input {

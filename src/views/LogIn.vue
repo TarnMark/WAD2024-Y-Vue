@@ -1,19 +1,25 @@
 <template>
-  <div class="form">
-    <h3>LogIn</h3>
-    <label for="email">Email</label>
-    <input type="email" name="email" required v-model="email">
-    <label for="password">Password</label>
-    <input type="password" name="password" required v-model="password">
+  <div class="page-body">
+    <div class="form">
+      <h3>Log In</h3>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" name="email" placeholder="Email" required v-model="email">
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" name="password" placeholder="Password" required v-model="password">
+      </div>
 
-    <div v-if="loading" class="spinner"></div>
+      <div v-if="loading" class="spinner"></div>
 
-    <div class="container">
-      <button @click="LogIn" :disabled="loading">LogIn</button>
-      <button @click='this.$router.push("/signup")'>Signup</button>
+      <div class="buttons-container">
+        <button @click="LogIn" :disabled="loading">Log In</button>
+        <button @click='this.$router.push("/signup")'>Sign Up</button>
+      </div>
+
+      <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
     </div>
-
-    <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
   </div>
 </template>
 
@@ -88,16 +94,6 @@ export default {
 </script>
 
 <style scoped>
-.form {
-  max-width: 300px;
-  margin: 30px auto;
-  background: rgb(230, 247, 232);
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
 h3 {
   color: rgb(8, 110, 110);
   margin-bottom: 20px;
@@ -117,19 +113,12 @@ input {
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 14px;
-  margin-bottom: 15px;
+  /* margin-bottom: 15px; */
 }
 
 input:focus {
   border-color: #007bff;
   outline: none;
-}
-
-.container {
-  display: flex;
-  justify-content: space-around;
-  gap: 10px;
-  padding: 10px 0;
 }
 
 button {

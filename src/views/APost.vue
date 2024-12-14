@@ -1,18 +1,15 @@
 <template>
-  <div class="A Post">
-    <div id="form">
-      <h3>A Post</h3>
+  <div class="page-body">
+    <div class="form">
+      <h3>Edit the post</h3>
       <label for="body">Body: </label>
       <input name="body" type="text" id="body" required v-model="post.body" />
 
-      <!-- TODO: Add post date! (as static info) -->
+      <div class="buttons-container">
+        <button @click="updatePost" class="updatePost">Update Post</button>
+        <button @click="deletePost" class="deletePost">Delete Post</button>
+      </div>
 
-      <!-- <label for="url">Url: </label>
-      <input name="url" type="text" id="url" required v-model="post.urllink" /> -->
-    </div>
-    <div class="container">
-      <button @click="updatePost" class="updatePost">Update Post</button>
-      <button @click="deletePost" class="deletePost">Delete Post</button>
     </div>
   </div>
 </template>
@@ -77,15 +74,6 @@ export default {
 </script>
 
 <style scoped>
-#form {
-  max-width: 420px;
-  margin: 30px auto;
-  background: rgb(167, 154, 154);
-  text-align: left;
-  padding: 40px;
-  border-radius: 10px;
-}
-
 h3 {
   text-align: center;
   color: rgb(8, 110, 110);
@@ -108,7 +96,7 @@ input {
   box-sizing: border-box;
   border: none;
   border-bottom: 1px solid white;
-  color: blue;
+  /* color: blue; */
 }
 
 button {
@@ -124,8 +112,11 @@ button:hover {
   background: rgb(20, 200, 200);
 }
 
-.container {
-  display: flex;
-  justify-content: center;
+.deletePost {
+    background-color: #ff2727;
+}
+
+.deletePost:hover {
+    background-color: #bd0000;
 }
 </style>

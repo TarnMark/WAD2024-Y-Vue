@@ -6,7 +6,6 @@
 
     <div class="post-list">
         <article class="post" v-for="post in posts" :key="post.id">
-            <!-- TODO: add "A Post" (editing) page here -->
             <router-link class="post-link" :to="'apost/' + post.id">
                 <header class="postheader">
                     <b> {{ post.title }} </b> <b>{{ new Date(post.date).toDateString() }} </b>
@@ -27,11 +26,6 @@ export default {
             posts: []
         }
     },
-    /*     computed: {
-            posts() {
-                return this.posts
-            }
-        }, */
     methods: {
         fetchPosts() {
             fetch(`http://localhost:3000/api/posts/`, { credentials: "include" }) // include user cookies
@@ -125,10 +119,10 @@ header.postheader {
 }
 
 #delete-all-button {
-    background-color: #ff005d;
+    background-color: #ff2727;
 }
 
 #delete-all-button:hover {
-    background-color: #bd0045;
+    background-color: #bd0000;
 }
 </style>

@@ -7,7 +7,13 @@
   </div>
 </template>
 
-<style>
+<script>
+export default {
+  name: "ContactsView",
+}
+</script>
+
+<style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Parisienne&display=swap");
 
 h1,
@@ -16,9 +22,3 @@ p.mail {
   font-family: "Parisienne";
 }
 </style>
-
-<script>
-export default {
-  name: "ContactsView",
-}
-</script>

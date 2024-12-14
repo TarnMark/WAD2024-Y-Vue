@@ -29,6 +29,7 @@ app.post('/api/posts', async (req, res) => {
     try {
         console.log("a post request has arrived");
         authenticateToken(req, res);
+        console.log(res.statusCode)
         if (res.statusCode >= 400) return;
         const post = req.body;
         post.date = new Date();
@@ -105,7 +106,7 @@ app.delete('/api/posts/:id', async (req, res) => {
 
 // Check whether user is authinticated
 app.get('/auth/authenticate', async (req, res) => {
-    console.log('authentication request has been arrived');
+    console.log('authentication request has arrived');
     const token = req.cookies.jwt;
     //console.log("token " + token);
     let authenticated = false;
@@ -117,13 +118,13 @@ app.get('/auth/authenticate', async (req, res) => {
                     console.log('token is not verified');
                     res.send({ "authenticated": authenticated });
                 } else {
-                    console.log('author is authinticated');
+                    console.log('author is authenticated');
                     authenticated = true;
                     res.send({ "authenticated": authenticated });
                 }
             })
         } else {
-            console.log('author is not authinticated');
+            console.log('author is not authenticated');
             res.send({ "authenticated": authenticated });
         }
     } catch (err) {

@@ -12,14 +12,7 @@ const routes = [
             title: "Home"
         },
         component: HomePage,
-        beforeEnter: async (to, from, next) => {
-            let authResult = await auth.authenticated();
-            if (!authResult) {
-                next('/login')
-            } else {
-                next();
-            }
-        }
+        beforeEnter: verifyAuth
     },
     {
         path: "/signup",
@@ -53,6 +46,7 @@ const routes = [
             title: "Add Post"
         },
         component: () => import("../views/AddPost.vue"),
+        beforeEnter: verifyAuth
     },
     {
         path: "/apost/:id",
@@ -61,8 +55,18 @@ const routes = [
             title: "A Post"
         },
         component: () => import("../views/APost.vue"),
+        beforeEnter: verifyAuth
     }
 ];
+
+async function verifyAuth(to, from, next) {
+    let authResult = await auth.authenticated();
+    if (!authResult) {
+        next('/login')
+    } else {
+        next();
+    }
+}
 
 const router = createRouter({
     history: createWebHashHistory(),
